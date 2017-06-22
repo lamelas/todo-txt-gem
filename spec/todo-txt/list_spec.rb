@@ -141,4 +141,20 @@ describe Todo::List do
   # Class should still be Todo::List
   # This assertion currently fails. TODO.
   # expect(list.sort).to be_a Todo::List
+
+  it 'should return a list without duplicated tasks' do
+    original_size = list.length
+
+    elements_to_clone = 4
+
+    elements_to_clone.times { |i|
+      list.push(list[i].clone)
+    }
+
+    expect(list.length).to be (original_size + elements_to_clone)
+
+    list.deduplicate!
+
+    expect(list.length).to be original_size
+  end
 end

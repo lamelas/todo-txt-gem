@@ -115,13 +115,20 @@ module Todo
     # Saves the list to the original file location.
     #
     # Warning: This is a destructive operation and will overwrite any existing
-    # content in the file. It does not attempt to diff and append changes.
+    # content in the file.
     #
     # If no `path` is specified in the constructor then an error is raised.
     def save!
       raise "No path specified." unless path
 
+      self.deduplicate!
+
       File.write(path, self)
+    end
+
+    # Remove duplicated tasks
+    def deduplicate!
+      self.uniq! { |t| t.raw }
     end
   end
 end
